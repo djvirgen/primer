@@ -1,21 +1,21 @@
 var Primer = {
-  isPrime: function(number) {
-    if (number < 1) return false;
-    if (number == 1) return true;
+  isPrime: function(number, known_primes) {
+    var sqrt = Math.sqrt(number);
     
-    for (var i = 2, l = Math.sqrt(number); i <= l; i++) {
-      if (!Primer.isPrime(i)) continue;
-      if (number % i == 0) return false;
+    for (var i = 0, l = known_primes.length, x; i < l; i++) {
+      x = known_primes[i];
+      if (x > sqrt) break;
+      if (number % x == 0) return false;
     }
     
     return true;
   },
   
-  getPrimes: function(min, max) {
+  getPrimes: function(max) {
     var primes = [];
     
-    for (i = min; i <= max; i++) {
-      if (Primer.isPrime(i)) primes.push(i);
+    for (i = 2; i <= max; i++) {
+      if (Primer.isPrime(i, primes)) primes.push(i);
     }
     
     return primes;
@@ -23,7 +23,7 @@ var Primer = {
 };
 
 t1 = new Date().getTime();
-primes = Primer.getPrimes(1, 10000);
+primes = Primer.getPrimes(100000);
 t2 = new Date().getTime();
 
 print(primes.join(' '));

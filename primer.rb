@@ -1,21 +1,20 @@
 class Integer
-  def prime?
-    return false if self < 1
-    return true if self == 1
+  def prime?(known_primes)
+    sqrt = Math.sqrt(self)
     
-    (2..Math.sqrt(self)).each do |x|
-      next unless x.prime?
+    known_primes.each do |x|
+      break if x > sqrt
       return false if self % x == 0
     end
     
     true
   end
   
-  def self.primes(min, max)
+  def self.primes(max)
     primes = []
 
-    (min..max).each do |x|
-      primes << x if x.prime?
+    (2..max).each do |x|
+      primes << x if x.prime?(primes)
     end
 
     primes
@@ -23,7 +22,7 @@ class Integer
 end
 
 t1 = Time.new
-primes = Integer.primes(1, 10000)
+primes = Integer.primes(100000)
 t2 = Time.new
 
 puts primes.join(' ')

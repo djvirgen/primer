@@ -2,25 +2,25 @@
 
 class Primer
 {
-  public static function is_prime($number)
+  public static function is_prime($number, $known_primes)
   {
-    if ($number < 1) return false;
-    if ($number == 1) return true;
+    $sqrt = sqrt($number);
     
-    for ($i = 2, $l = sqrt($number); $i <= $l; $i++) {
-      if (!self::is_prime($i)) continue;
-      if ($number % $i == 0) return false;
+    for ($i = 0, $l = count($known_primes); $i < $l; $i++) {
+      $x = $known_primes[$i];
+      if ($x > $sqrt) break;
+      if ($number % $x == 0) return false;
     }
     
     return true;
   }
   
-  public static function all_primes($min, $max)
+  public static function all_primes($max)
   {
     $primes = array();
     
-    for ($i = $min; $i <= $max; $i++) {
-      if (self::is_prime($i)) $primes[] = $i;
+    for ($i = 2; $i <= $max; $i++) {
+      if (self::is_prime($i, $primes)) $primes[] = $i;
     }
     
     return $primes;
@@ -28,7 +28,7 @@ class Primer
 }
 
 $t1 = microtime(true);
-$primes = Primer::all_primes(1, 10000);
+$primes = Primer::all_primes(100000);
 $t2 = microtime(true);
 
 echo implode($primes, ' ') . PHP_EOL;
